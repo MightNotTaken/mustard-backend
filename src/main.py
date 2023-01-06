@@ -72,5 +72,7 @@ if __name__ == '__main__':
     streaming_thread = threading.Thread(target=streamer.captureFrames)
     streaming_thread.daemon = True
     streaming_thread.start()
+    
+    subprocess.run(['electron', '/home/nvidia/project/mustard-seed-tester'])
 
     app.run(port=3030)
