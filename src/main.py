@@ -64,6 +64,12 @@ def shutdown():
         return str(error), 400
 
 
+def run_electron_app():
+    subprocess.run(['electron', '/home/nvidia/project/mustard-seed-tester'])
+
+def run_server():
+    app.run(port=3030)
+
 
 
 
@@ -73,8 +79,9 @@ if __name__ == '__main__':
     streaming_thread.daemon = True
     streaming_thread.start()
 
+    electron_thread = threading.Thread(target=run_electron_app)
+    electron_thread.daemon = True
+    electron_thread.start()
 
-    
-    subprocess.run(['electron', '/home/nvidia/project/mustard-seed-tester'])
-
-    app.run(port=3030)
+    server_thread = threading.Thread(target=run_server)
+    server_thread.start()
