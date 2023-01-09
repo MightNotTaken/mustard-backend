@@ -79,9 +79,9 @@ if __name__ == '__main__':
     streaming_thread.daemon = True
     streaming_thread.start()
 
-    electron_thread = threading.Thread(target=run_electron_app)
-    electron_thread.daemon = True
-    electron_thread.start()
+    # electron_thread = threading.Thread(target=run_electron_app)
+    # electron_thread.daemon = True
+    # electron_thread.start()
 
     server_thread = threading.Thread(target=run_server)
     server_thread.start()
