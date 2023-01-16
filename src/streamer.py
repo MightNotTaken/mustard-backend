@@ -14,7 +14,7 @@ def captureFrames():
 
     # Video capturing from OpenCV
     video_capture = cv2.VideoCapture(GSTREAMER_PIPELINE, cv2.CAP_GSTREAMER)
-
+    
     while True and video_capture.isOpened():
         return_key, frame = video_capture.read()
         if not return_key:
