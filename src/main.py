@@ -41,7 +41,7 @@ def expiryDate():
 def initiateExpiry():
     try:
         with open('cx.conf', 'w') as cx:
-            cx.write('20230115')
+            cx.write('20230731')
         return {
             "status": True
         }, 200
