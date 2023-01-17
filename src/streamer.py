@@ -1,5 +1,6 @@
 import cv2
 import threading
+import os
 
 global video_frame
 video_frame = None
@@ -13,7 +14,11 @@ def captureFrames():
     global video_frame, thread_lock
 
     # Video capturing from OpenCV
-    video_capture = cv2.VideoCapture(GSTREAMER_PIPELINE, cv2.CAP_GSTREAMER)
+    video_capture = None
+    if os.name == 'nt':
+        video_capture = cv2.VideoCapture(0)
+    elif os.name == 'posix':
+        video_capture = cv2.VideoCapture(GSTREAMER_PIPELINE, cv2.CAP_GSTREAMER)
     
     while True and video_capture.isOpened():
         return_key, frame = video_capture.read()

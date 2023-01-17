@@ -1,9 +1,11 @@
 from flask import Flask, request, Response
 import subprocess
+import os
 import json
-
 import threading
 import streamer
+
+from datetime import datetime
 
 from files_utils import get_index, add_new_entry
 from export_file import ExportComponent
@@ -16,6 +18,48 @@ exporter = ExportComponent()
 def streamFrames():
     return Response(streamer.encodeFrame(), mimetype = "multipart/x-mixed-replace; boundary=frame")
 
+
+@app.route("/expiry", methods=["GET"])
+def expiryDate():
+    today = int(datetime.now().strftime("%Y%m%d"))
+    try:
+        with open('cx.conf', 'r') as cx:
+            dt = int(cx.read())
+            if dt < today:
+                return {
+                    "expired": True
+                }, 200
+        return {
+            "expired": False
+        }, 200
+    except Exception as error:
+        return {
+            "expired": False
+        }, 200
+
+@app.route("/initiate-expiry")
+def initiateExpiry():
+    try:
+        with open('cx.conf', 'w') as cx:
+            cx.write('20230715')
+        return {
+            "status": True
+        }, 200
+    except Exception as error:
+        print(error)
+        return error, 200
+
+
+@app.route("/remove-expiry", methods=['GET'])
+def extendExpiryDate():
+    try:
+        os.unlink('cx.conf')
+        return {
+            "status": True
+        }, 200
+    except Exception as error:
+        print(error)
+        return error, 404
 
 @app.route('/getNextID', methods=['GET'])
 def get_next_id():
