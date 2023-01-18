@@ -28,6 +28,7 @@ class ExportComponent:
             return os.path.abspath(os.path.join(os.path.dirname(__file__), './../output'))
         elif os.name == 'posix':
             drives = os.listdir('/media/nvidia')
+            drives.remove('4A96F60096F5EC77')
             if drives:
                 return os.path.join('/media/nvidia', drives[-1])
             else:
