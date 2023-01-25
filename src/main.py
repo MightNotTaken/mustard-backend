@@ -92,6 +92,7 @@ def export(id):
 @app.route('/getTotalFiles', methods=['GET'])
 def get_total_files():
     try:
+        exporter.mount()
         total = exporter.load()
         return {'total': total}, 200
     except Exception as error:

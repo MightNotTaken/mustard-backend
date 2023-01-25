@@ -1,9 +1,18 @@
 import os
 import shutil
+import subprocess
 
 class ExportComponent:
     total = 0
     paths = []
+
+    def __init__(selff):
+        try:
+            if os.name == 'posix':
+                self.mount_point = '/media/nvidia/pendrive'
+                os.system(f'sudo mkdir {self.mount_point}')
+        except:
+            pass
 
     def load(self):
         try:
@@ -23,16 +32,28 @@ class ExportComponent:
         self.total = 0
         self.paths = []
 
+    def get_mountable_drive():
+        for dir in os.listdir('/dev'):
+            if dir.count('sd'):
+                return f'/dev/${dir}'
+        return None
+        
+    def mount(self):
+        try:
+            flash_drive = self.get_mountable_drive()
+            if flash_drive and not os.path.ismount(self.mount_point):
+                subprocess.run(['sudo', 'mount', flash_drive, self.mount_point])
+        except:
+            pass
+
+
+
     def get_destination_path(self):
         if os.name == 'nt':
             return os.path.abspath(os.path.join(os.path.dirname(__file__), './../output'))
         elif os.name == 'posix':
-            drives = os.listdir('/media/nvidia')
-            drives.remove('4A96F60096F5EC77')
-            if drives:
-                return os.path.join('/media/nvidia', drives[-1])
-            else:
-                return None
+            return self.mount_point
+
 
     def export(self, id):
         try:
