@@ -6,11 +6,10 @@ class ExportComponent:
     total = 0
     paths = []
 
-    def __init__(selff):
+    def __init__(self):
         try:
-            if os.name == 'posix':
-                self.mount_point = '/media/nvidia/pendrive'
-                os.system(f'sudo mkdir {self.mount_point}')
+            self.mount_point = '/media/nvidia/pendrive'
+            os.system(f'sudo mkdir {self.mount_point}')
         except:
             pass
 
@@ -49,10 +48,7 @@ class ExportComponent:
 
 
     def get_destination_path(self):
-        if os.name == 'nt':
-            return os.path.abspath(os.path.join(os.path.dirname(__file__), './../output'))
-        elif os.name == 'posix':
-            return self.mount_point
+        return self.mount_point
 
 
     def export(self, id):
