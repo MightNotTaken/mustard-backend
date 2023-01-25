@@ -37,7 +37,7 @@ class ExportComponent:
     def get_mountable_drive(self):
         self.flashs = []
         for dir in os.listdir('/dev'):
-            if dir.count('sd') and len(dir) == 3:
+            if dir.count('sd') and len(dir) > 3:
                 self.flashs.append(f'/dev/{dir}')
         return self.flashs
 
