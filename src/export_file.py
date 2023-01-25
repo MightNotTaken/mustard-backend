@@ -8,11 +8,13 @@ class ExportComponent:
     paths = []
 
     def __init__(self):
-        try:
-            self.mount_point = '/media/nvidia/pendrive'
-            os.system(f'sudo mkdir {self.mount_point}')
-        except:
-            pass
+            self.mount_points = ['/media/nvidia/pd1', '/media/nvidia/pd2', '/media/nvidia/pd3', '/media/nvidia/pd4']
+            self.flashs = []
+            for point in self.mount_points:
+                try:
+                    os.system(f'sudo mkdir {point}')
+                except:
+                    pass
 
     def load(self):
         try:
@@ -32,38 +34,45 @@ class ExportComponent:
         self.total = 0
         self.paths = []
 
-    def get_mountable_drive():
+    def get_mountable_drive(self):
+        self.flashs = []
         for dir in os.listdir('/dev'):
             if dir.count('sd'):
-                return f'/dev/${dir}'
-        return None
+                self.flashs.append(f'/dev/${dir}')
+        return self.flashs
         
     def mount(self):
         try:
-            flash_drive = self.get_mountable_drive()
-            print('flash: ', flash_drive)
-            if flash_drive and not os.path.ismount(self.mount_point):
-                subprocess.run(['sudo', 'mount', flash_drive, self.mount_point])
-                sleep(2)
+            flash_drives = self.get_mountable_drive()
+            for i in range(len(flash_drives)):
+                subprocess(['sudo', 'umount', self.mount_points[i]])
+                sleep(.5)
+                subprocess.run(['sudo', 'mount', flash_drives[i], self.mount_points[i]])
+                sleep(1)
         except Exception as e:
             print(e)
             pass
 
 
 
-    def get_destination_path(self):
-        return self.mount_point
+    def get_destination_path(self, index):
+        return self.mount_points[index]
 
 
     def export(self, id):
         try:
             print('path: ', self.get_destination_path())
             source_path = os.path.join(os.path.dirname(__file__), './../database', self.paths[id])
-            destination_path = os.path.join(self.get_destination_path(), self.paths[id])
-            if os.name == 'nt':
-                shutil.copyfile(source_path, destination_path)
-            elif os.name == 'posix':
-                shutil.copyfile(source_path, destination_path)
+            flash_drives = self.get_mountable_drive()
+            for i in range(len(flash_drives)):
+                try:
+                    destination_path = os.path.join(self.get_destination_path(i), self.paths[id])
+                    if os.name == 'nt':
+                        shutil.copyfile(source_path, destination_path)
+                    elif os.name == 'posix':
+                        shutil.copyfile(source_path, destination_path)
+                except:
+                    pass
             return True
         except OSError as error:
             print(error)
