@@ -37,13 +37,13 @@ class ExportComponent:
     def get_mountable_drive(self):
         self.flashs = []
         for dir in os.listdir('/dev'):
-            if dir.count('sd'):
+            if dir.count('sd') and len(dir) == 3:
                 self.flashs.append(f'/dev/{dir}')
         return self.flashs
 
     def unmount_all(self):
         flash_drives = self.get_mountable_drive()
-        for i in range(1):#range(len(flash_drives)):
+        for i in range(len(flash_drives)):
             print('unmounting', self.mount_points[i])
             subprocess.run(['sudo', 'umount', self.mount_points[i]])
             sleep(1)
@@ -52,7 +52,7 @@ class ExportComponent:
         self.unmount_all()
         try:
             flash_drives = self.get_mountable_drive()
-            for i in range(1):#range(len(flash_drives)):
+            for i in range(len(flash_drives)):
                 print('mounting', flash_drives[i], 'at', self.mount_points[i])
                 subprocess.run(['sudo', 'mount', flash_drives[i], self.mount_points[i]])
                 sleep(1)
@@ -70,7 +70,7 @@ class ExportComponent:
         try:
             source_path = os.path.join(os.path.dirname(__file__), './../database', self.paths[id])
             flash_drives = self.get_mountable_drive()
-            for i in range(1):#range(len(flash_drives)):
+            for i in range(len(flash_drives)):
                 try:
                     destination_path = os.path.join(self.get_destination_path(i), self.paths[id])
                     if os.name == 'nt':
