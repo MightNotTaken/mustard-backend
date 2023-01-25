@@ -49,6 +49,7 @@ class ExportComponent:
             sleep(1)
 
     def mount(self):
+        self.unmount_all()
         try:
             flash_drives = self.get_mountable_drive()
             for i in range(len(flash_drives)):
