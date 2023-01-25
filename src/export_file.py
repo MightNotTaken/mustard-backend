@@ -45,8 +45,7 @@ class ExportComponent:
         try:
             flash_drives = self.get_mountable_drive()
             for i in range(len(flash_drives)):
-                subprocess(['sudo', 'umount', self.mount_points[i]])
-                sleep(.5)
+                print('mounting', flash_drives[i], 'at', self.mount_points[i])
                 subprocess.run(['sudo', 'mount', flash_drives[i], self.mount_points[i]])
                 sleep(1)
         except Exception as e:
