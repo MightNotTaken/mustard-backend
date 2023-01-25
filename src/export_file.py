@@ -1,5 +1,6 @@
 import os
 import shutil
+from time import sleep
 import subprocess
 
 class ExportComponent:
@@ -40,9 +41,12 @@ class ExportComponent:
     def mount(self):
         try:
             flash_drive = self.get_mountable_drive()
+            print('flash: ', flash_drive)
             if flash_drive and not os.path.ismount(self.mount_point):
                 subprocess.run(['sudo', 'mount', flash_drive, self.mount_point])
-        except:
+                sleep(2)
+        except Exception as e:
+            print(e)
             pass
 
 
