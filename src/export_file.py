@@ -66,6 +66,8 @@ class ExportComponent:
     def get_destination_path(self, index):
         return self.mount_points[index]
 
+    def stop(self):
+        self.unmount_all()
 
     def export(self, id):
         try:

@@ -89,6 +89,16 @@ def export(id):
         print(error)
         return {'status': 'error in exporting'}, 200
 
+
+@app.route('/stop-export', methods=['GET'])
+def stopExport():
+    try:
+        exporter.stop()
+        return {'status': 'done'}, 200
+    except Exception as error:
+        print(error)
+        return {'status': 'error in exporting'}, 200
+
 @app.route('/getTotalFiles', methods=['GET'])
 def get_total_files():
     try:
