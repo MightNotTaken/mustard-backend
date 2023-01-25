@@ -38,7 +38,7 @@ class ExportComponent:
         self.flashs = []
         for dir in os.listdir('/dev'):
             if dir.count('sd'):
-                self.flashs.append(f'/dev/${dir}')
+                self.flashs.append(f'/dev/{dir}')
         return self.flashs
         
     def mount(self):
