@@ -61,7 +61,6 @@ class ExportComponent:
 
     def export(self, id):
         try:
-            print('path: ', self.get_destination_path())
             source_path = os.path.join(os.path.dirname(__file__), './../database', self.paths[id])
             flash_drives = self.get_mountable_drive()
             for i in range(len(flash_drives)):
