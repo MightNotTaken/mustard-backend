@@ -40,7 +40,14 @@ class ExportComponent:
             if dir.count('sd'):
                 self.flashs.append(f'/dev/{dir}')
         return self.flashs
-        
+
+    def unmount_all(self):
+        flash_drives = self.get_mountable_drive()
+        for i in range(len(flash_drives)):
+            print('unmounting', self.mount_points[i])
+            subprocess.run(['sudo', 'umount', self.mount_points[i]])
+            sleep(1)
+
     def mount(self):
         try:
             flash_drives = self.get_mountable_drive()
